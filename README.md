@@ -23,6 +23,7 @@ dnspod {
 
 # Build Jar file
 * requires JDK 8+
+
 run `./gradlew clean build`, and `.jar` file will be found in build/libs
 
 # Build Docker image
