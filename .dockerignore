@@ -1,7 +1,5 @@
+**/.DS_Store
 .idea
-gradle
+.gradle
 out
 .git
-src
-test
-resource

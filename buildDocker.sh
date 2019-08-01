@@ -1,2 +1,1 @@
-./gradlew clean build &&\
- docker build -t fuyongxing/dnspod-ddns .
+docker build -t fuyongxing/dnspod-DDNS .

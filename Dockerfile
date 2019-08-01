@@ -1,3 +1,8 @@
-FROM azul/zulu-openjdk-alpine:11.0.4-jre
-COPY build/libs/com.fuyongxing-0.0.1.jar /app.jar
-CMD ["java","-jar","/app.jar"]
+FROM azul/zulu-openjdk-alpine:12
+COPY . /code
+RUN mkdir /app &&\
+  /code/gradlew -p /code clean distTar &&\
+  tar -xf /code/build/distributions/dnspod-DDNS-0.0.1.tar -C /app --strip-components 1 &&\
+  rm -rf ./code
+
+CMD ["ash","/app/bin/dnspod-DDNS"]

@@ -5,10 +5,10 @@ A Kotlin implementation of dynamic DNS client working with https://dnspod.cn
 * This project is built on top of [Kotlin](https://github.com/JetBrains/kotlin), [Retrofit](https://github.com/square/retrofit), [RxKotlin](https://github.com/ReactiveX/RxKotlin) and [lightbend/config](https://github.com/lightbend/config)
 
 # Example
-![example](docs/Xnip2019-07-29_11-19-03.jpg)
+![example](docs/Xnip2019-08-01_13-21-45.jpg)
 
 # Quick start with docker
-`docker run -it --network host -v YOUR_CONFIG_FILE:/application.conf fuyongxing/dnspod-ddns`
+`docker run -it --network host -v YOUR_CONFIG_FILE:/app/application.conf fuyongxing/dnspod-ddns`
 
 * `--network host` ensures host network interfaces can be detected by docker container
 * [YOUR_CONFIG_FILE](application.conf) stores your api-key and domain in the following format
@@ -24,7 +24,7 @@ dnspod {
 # Build Jar file
 * requires JDK 8+
 
-run `./gradlew clean build`, and `.jar` file will be found in build/libs
+run `./gradlew distTar`, and `.jar` file will be included in build/distributions/dnspod-DDNS-x.x.x.tar
 
 # Build Docker image
-run `./gradlew clean build && docker build -t fuyongxing/dnspod-ddns .`
+run `docker build -t fuyongxing/dnspod-ddns .`
