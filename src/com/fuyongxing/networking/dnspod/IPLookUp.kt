@@ -1,50 +1,49 @@
 package com.fuyongxing.networking.dnspod
 
 import com.fuyongxing.kotlin.extension.println
+import com.fuyongxing.networking.dnspod.iplookup.*
+import io.reactivex.Flowable
+import io.reactivex.Flowable.defer
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.Single
-import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-
-interface HostIPService {
-    @GET("get_json.php")
-    fun get(): Call<HostIPGetResponse>
-}
-
-val hostIPService: HostIPService = Retrofit.Builder()
-    .baseUrl("http://api.hostip.info")
-    .addConverterFactory(GsonConverterFactory.create())
-    .build()
-    .create(HostIPService::class.java)
-
-data class HostIPGetResponse(
-    val ip: String,
-    val city: String?,
-    val country_code: String?,
-    val country_name: String?
-)
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 fun ipLookup(): Single<List<IpLookup>> = Single.defer {
     Single.just<List<IpLookup>>(
         Observable.create<IpLookup> { observer ->
-            observer.onNext(IpLookup.fromHostIPGetResponse(hostIPService.get().execute().body()!!))
+            runBlocking {
+                launch { observer.onNext(IpLookup.from(hostIPService.get().execute().body()!!)) }
+                launch { observer.onNext(IpLookup.from(ipifyService.get().execute().body()!!)) }
+                launch { observer.onNext(IpLookup.from(ipapiService.get().execute().body()!!)) }
+                launch { observer.onNext(IpLookup.from(the360IPService.get().execute().body()!!)) }
+                launch { observer.onNext(IpLookup.from(ifconfigIPService.get().execute().body()!!)) }
+            }
             observer.onComplete()
         }.blockingIterable().toList()
     )
 }
 
 fun main() {
-    hostIPService.get().execute().body()!!.println()
+    runBlocking {
+        launch { hostIPService.get().execute().body()!!.println() }
+        launch { ipifyService.get().execute().body()!!.println() }
+        launch { ipapiService.get().execute().body()!!.println() }
+        launch { the360IPService.get().execute().body()!!.println() }
+        launch { ifconfigIPService.get().execute().body()!!.println() }
+    }
 }
 
 data class IpLookup(
     val id: Int,
     val name: String,
     val ipv4Address: String?,
-    val country: String?,
-    val city: String?
+    val country: String? = "unknown",
+    val city: String? = "unknown"
 ) {
     companion object {
         fun generateTable(list: List<IpLookup>) =
@@ -63,8 +62,20 @@ data class IpLookup(
                 }
             }
 
-        fun fromHostIPGetResponse(hostIpgetResponse: HostIPGetResponse) =
-            IpLookup(-1, "hostip.info", hostIpgetResponse.ip, hostIpgetResponse.country_name, hostIpgetResponse.city)
+        fun from(response: HostIPService.GetResponse) =
+            IpLookup(-1, "hostip.info", response.ip, response.country_name, response.city)
+
+        fun from(response: IPIFYService.GetResponse) =
+            IpLookup(-1, "ipify.org", response.ip)
+
+        fun from(response: IPAPIService.GetResponse) =
+            IpLookup(-1, "ipapi.co", response.ip, response.country, response.city)
+
+        fun from(response: IfconfigIPService.GetResponse) =
+            IpLookup(-1, "ifconfig.co", response.ip, response.country, response.city)
+
+        fun from(response: The360IPService.GetResponse) =
+            IpLookup(-1, "ip.360.cn", response.ip, city = response.location)
 
     }
 }

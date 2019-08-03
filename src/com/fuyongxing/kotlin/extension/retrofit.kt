@@ -11,3 +11,6 @@ fun Retrofit.Builder.log(): Retrofit.Builder {
         }).build()
     )
 }
+
+//val parallelClient = OkHttpClient.Builder().dispatcher(Dispatcher().also { it.maxRequests = 8 }).build()
+

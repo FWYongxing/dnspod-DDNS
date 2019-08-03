@@ -1,4 +1,4 @@
-val kotlinVersion = "1.3.40"
+val kotlinVersion = "1.3.41"
 val logbackVersion = "1.2.1"
 val conifg4KVersion = "0.4.1"
 val rxkotlinVersion = "2.4.0-beta.1"
@@ -14,7 +14,7 @@ repositories {
 
 plugins {
     application
-    kotlin("jvm") version "1.3.40"
+    kotlin("jvm") version "1.3.41"
 }
 
 application {
@@ -30,6 +30,7 @@ application {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0-RC")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.github.config4k:config4k:$conifg4KVersion")
     implementation("io.reactivex.rxjava2:rxkotlin:$rxkotlinVersion")
