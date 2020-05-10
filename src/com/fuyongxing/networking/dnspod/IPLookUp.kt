@@ -2,30 +2,39 @@ package com.fuyongxing.networking.dnspod
 
 import com.fuyongxing.kotlin.extension.println
 import com.fuyongxing.networking.dnspod.iplookup.*
-import io.reactivex.Flowable
-import io.reactivex.Flowable.defer
-import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-fun ipLookup(): Single<List<IpLookup>> = Single.defer {
-    Single.just<List<IpLookup>>(
-        Observable.create<IpLookup> { observer ->
-            runBlocking {
-                launch { observer.onNext(IpLookup.from(hostIPService.get().execute().body()!!)) }
-                launch { observer.onNext(IpLookup.from(ipifyService.get().execute().body()!!)) }
-                launch { observer.onNext(IpLookup.from(ipapiService.get().execute().body()!!)) }
-                launch { observer.onNext(IpLookup.from(the360IPService.get().execute().body()!!)) }
-                launch { observer.onNext(IpLookup.from(ifconfigIPService.get().execute().body()!!)) }
+fun ipLookup(): List<IpLookup> {
+    val list = mutableListOf<IpLookup>()
+
+    runBlocking {
+        launch {
+            try {
+                IpLookup.from(hostIPService.get().execute().body()!!).let { list.add(it) }
+            } catch (e: Exception) {
             }
-            observer.onComplete()
-        }.blockingIterable().toList()
-    )
+        }
+        launch {
+            try {
+                IpLookup.from(ipifyService.get().execute().body()!!).let { list.add(it) }
+            } catch (e: Exception) {
+            }
+        }
+        launch {
+            try {
+                IpLookup.from(ipapiService.get().execute().body()!!).let { list.add(it) }
+            } catch (e: Exception) {
+            }
+        }
+        launch {
+            try {
+                IpLookup.from(ifconfigIPService.get().execute().body()!!).let { list.add(it) }
+            } catch (e: Exception) {
+            }
+        }
+    }
+    return list
 }
 
 fun main() {
@@ -33,7 +42,6 @@ fun main() {
         launch { hostIPService.get().execute().body()!!.println() }
         launch { ipifyService.get().execute().body()!!.println() }
         launch { ipapiService.get().execute().body()!!.println() }
-        launch { the360IPService.get().execute().body()!!.println() }
         launch { ifconfigIPService.get().execute().body()!!.println() }
     }
 }

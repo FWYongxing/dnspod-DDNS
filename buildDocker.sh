@@ -1,1 +1,1 @@
-docker build -t fuyongxing/dnspod-DDNS .
+docker build -t fuyongxing/dnspod-ddns .

@@ -17,10 +17,3 @@ interface The360IPService {
         val nickname: String
     )
 }
-
-
-val the360IPService: The360IPService = Retrofit.Builder()
-    .baseUrl("http://ip.360.cn ")
-    .addConverterFactory(GsonConverterFactory.create())
-    .build()
-    .create(The360IPService::class.java)

@@ -1,12 +1,12 @@
 package com.fuyongxing.networking.dnspod
 
-import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import java.io.IOException
 
 const val format: String = "json"
 const val error_on_empty: String = "yes"
@@ -113,7 +113,8 @@ data class DNSPodPutRecordResponse(
 }
 
 
-fun records(apiId:String,apiKey:String,domain:String): Observable<List<DNSPodGetRecordsResponse.Record>> = Observable.create<List<DNSPodGetRecordsResponse.Record>> { observer ->
+@Throws(IOException::class)
+fun records(apiId: String, apiKey: String, domain: String): List<DNSPodGetRecordsResponse.Record> {
     val response =
         dnsPodService.get(
             "$apiId,$apiKey",
@@ -127,10 +128,5 @@ fun records(apiId:String,apiKey:String,domain:String): Observable<List<DNSPodGet
         logger.warn { "${response.body()}" }
         throw java.lang.Exception("error occurred when getting DNS records")
     }
-    observer.onNext(response.body()!!.records)
-    observer.onComplete()
-}.filter { records ->
-    (!records.isNullOrEmpty()).also {
-        if (!it) logger.warn { "no sub domains of domain($domain) are found" }
-    }
+    return response.body()!!.records
 }

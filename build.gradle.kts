@@ -14,7 +14,7 @@ repositories {
 
 plugins {
     application
-    kotlin("jvm") version "1.3.41"
+    kotlin("jvm") version "1.3.72"
 }
 
 application {
@@ -30,11 +30,9 @@ application {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0-RC")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.github.config4k:config4k:$conifg4KVersion")
-    implementation("io.reactivex.rxjava2:rxkotlin:$rxkotlinVersion")
-    implementation("io.reactivex.rxjava2:rxjava:$rxjavaVersion")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
     implementation("com.google.code.gson:gson:$gsonVersion")
