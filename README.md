@@ -1,12 +1,12 @@
 # dnspod-DDNS
 A Kotlin implementation of dynamic DNS client working with https://dnspod.cn
 
-* Docker image can be found at [fuyongxing/dnspod-ddns](https://cloud.docker.com/repository/docker/fuyongxing/dnspod-ddns/general)
+* Docker image can be found at [Docker Hub](https://hub.docker.com/r/fuyongxing/dnspod-ddns)
 * This project is built on top of [Kotlin](https://github.com/JetBrains/kotlin) and [Retrofit](https://github.com/square/retrofit)
 
 
 # Quick start with docker
-#### start container with a config file
+## start container with a config file
 
 `docker run -it --network host  -v YOUR_CONFIG_FILE:/application.conf fuyongxing/dnspod-ddns`
 
@@ -23,7 +23,7 @@ dnspod {
 ![example](docs/Xnip2020-05-10_17-39-37.jpg)
 
 
-#### start container without a config file, which requires inputting your apiId in interactively.
+## start container without a config file, which requires inputting your apiId in interactively.
 
 `docker run -it --network host  fuyongxing/dnspod-ddns`
 * `--network host` ensures host network interfaces can be detected by docker container
