@@ -23,7 +23,7 @@ dnspod {
 ![example](docs/Xnip2020-05-10_17-39-37.jpg)
 
 
-## start container without a config file, which requires inputting your apiId in interactively.
+## start container without a config file, which requires inputting your apiId interactively.
 
 `docker run -it --network host  fuyongxing/dnspod-ddns`
 * `--network host` ensures host network interfaces can be detected by docker container
@@ -32,7 +32,7 @@ dnspod {
 # Build Jar file
 * requires JDK 8
 
-run `./gradlew distTar`, and a `.jar` file will be presented at build/distributions/dnspod-DDNS-x.x.x.tar
+run `./gradlew distTar`, and a `.jar` file will be presented as build/distributions/dnspod-DDNS-x.x.x.tar
 
 # Build a Docker image
 run `docker build -t fuyongxing/dnspod-ddns .`
